@@ -1,8 +1,9 @@
 % Parameters
-num_cards = 500; % Number of cards we are counting in this data
+num_cards = 523; % Number of cards we are counting in this data
 samples_per_card = 100;% Number of measurements we will take over one card
-theta = 85;% Angle of the cards [deg]
-t_card = 0.033;% Thickness of the card [in]
+theta = 46;% Angle of the cards [deg]
+%t_card was .033
+t_card = 0.0299;% Thickness of the card [in]
 
 % Wave properties derived from parameters
 period = t_card*sind(theta)*tand(theta)+t_card*cosd(theta);% Period [in]
@@ -23,18 +24,21 @@ for i = 1:length(x_mod)
         % Falling edge: y = amplitude - (slope_down) * x
         y(i) = amplitude - (amplitude / ((1 - duty_cycle) * period)) * (x_mod(i) - duty_cycle * period);
     end
-    y(i) = y(i) + rand(1,1)/300;
+    y(i) = y(i) + rand(1,1)/150;
 end
 
+% Low-pass filter
+cutoff_frequency = 0.0001; % Adjust cutoff frequency to suit your needs
+y_filt = lowpass(y, cutoff_frequency);
 
-%Counting Mechanism
+% Counting Mechanism
 count = 0;               % Initialize count for positive to negative transitions
 num_entries = length(y); % Total number of entries in y
 der_y = [];              % Initialize der_y as an empty array
 
 % Loop to calculate the derivative (difference) between every 2 entries in y
 for i = 30:num_entries-30  % Iterate up to the second last entry
-    derivative = y(i+30) - y(i);  % Calculate the derivative
+    derivative = y_filt(i+30) - y_filt(i);  % Calculate the derivative
     der_y(end + 1) = derivative;  % Append the derivative to der_y
 end
 
@@ -46,17 +50,22 @@ for i = 2:length(der_y)     % Start from the second entry to compare with the pr
 end
 
 % Display the result
-disp(['Number of transitions from positive to negative: ', num2str(count)]);
+disp(['Total Card Count: ', num2str(count)]);
 
-
-
-
-
-    
 % Plot the triangle wave
+subplot(2, 1, 1);
 plot(x, y);
 xlabel('x');
 ylabel('y');
-title('Triangle Waveform (Uneven Legs)');
+title('Original Triangle Waveform (Uneven Legs)');
+axis equal;
+grid on;
+
+% Plot the filtered wave
+subplot(2, 1, 2);
+plot(x, y_filt);
+xlabel('x');
+ylabel('y');
+title('Filtered Triangle Waveform (Smoothed)');
 axis equal;
 grid on;
