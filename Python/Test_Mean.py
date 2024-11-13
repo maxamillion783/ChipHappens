@@ -2,36 +2,35 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+from scipy.signal import find_peaks, butter, filtfilt
 
-# Function for taking the derivative at each point
-# df - dataframe containing the column you want to take the derivative of.
-# h - time between data points (SAMPLE_RATE)
-# returns an array of the derivatives
-# This function only works for data that is formatted correctly
-def firstDeriv(df, h):
-    n = df.shape[0] # The number of derivatives to take will be the same as the number of rows in the data frame
-    deriv = [0]*n # Preallocate the memory for the array
+# Function which applies a low-pass filter to the data
+def lowPass(df, fs):
+    cutoff = 75 # cutoff frequency in Hertz
+    order = 4  # Filter order
+    nyquist = 0.5 * fs  # Nyquist frequency
+    normal_cutoff = cutoff / nyquist  # Normalized cutoff frequency
 
-    # One-sided derivatives for beginning and end
-    deriv[0] = (-3*df.iloc[0,1]+4*df.iloc[1,1]-df.iloc[2,1])/(2*h)
-    deriv[n-1] = (3*df.iloc[n-1,1]-4*df.iloc[n-2,1]+df.iloc[n-3,1])/(2*h)
+    b, a = butter(order, normal_cutoff, btype='low', analog=False)
 
-    # Centered derivative for middle points
-    for i, value in enumerate(df["OUT01(mm)"].iloc[1:-1], start=1):
-        deriv[i] = (df.iloc[i+1,1]-df.iloc[i-1,1])/(2*h)
-        
-    return deriv
+    # Apply the filter to the signal using filtfilt (zero-phase filtering)
+    filtered_signal = filtfilt(b, a, df["OUT01(mm)"])
+    df["Filtered"] = filtered_signal
 
-# TODO: Make this find the relative peaks
-def findPeaks(df):
+    # Plot the original and filtered signals
+    # plt.figure(figsize=(10, 6))
+    # plt.plot(df["Trigger count"], df["OUT01(mm)"], label='Original Signal')
+    # plt.plot(df["Trigger count"], df["Filtered"], label='Filtered Signal (Low-Pass)', linewidth=2)
+    # plt.xlabel('Time [s]')
+    # plt.ylabel('Amplitude')
+    # plt.legend()
+    # plt.show()
+
+# Find and return peaks and troughs
+def findCharacteristics(df):
     peaks = []
-
-    for i, value in enumerate(df["Derivatives"].iloc[1:], start=1): # Iterate from the second point to the last point
-        if df.iloc[i,1] < 3 and df.iloc[i,1] > 1: # Ignore wildly out of range points
-            if value < 0 and df.iloc[i-1, 3] >= 0: # Count peaks where derivative changes from positive to negative
-                peaks.append(df.iloc[i,1])
-
-    return peaks
+    peakIndices, _ = find_peaks(df["Filtered"], distance=25)
+    peaks.append(peakIndices)
 
 # Function for counting double and triple peaks based off of the mean
 def meanCounter(peaks, theta):
@@ -60,20 +59,26 @@ SAMPLE_RATE = 0.001 # Sensor takes data every SAMPLE_RATE seconds
 ANGLE = 25 # Angle of the data
 
 # Load the CSV file into a DataFrame
-file = '../TestData/AP-DATA-004_10-22_trial_1_400mm_1000us_black_solid.csv'
+file = '../TestData/AP-DATA-011_11-12_BSC_c=92_d=10_t=1000_v=1000.csv'
 df = pd.read_csv(file, skiprows = 11)
+df = df[df["OUT01(mm)"] > 0]
 
 # Display the first few rows of the DataFrame
 print(df.head())
 
+lowPass(df, 1/SAMPLE_RATE)
+
 # Count peaks
-df["Derivatives"] = firstDeriv(df, SAMPLE_RATE) # Add the derivatives to the dataframe
-peaks = findPeaks(df) # Create an array of all of the peaks based off of the first derivative
-doublePeaks, triplePeaks = meanCounter(peaks, ANGLE)
-count = len(peaks) + len(doublePeaks) + 2*len(triplePeaks)
+# df["Derivatives"] = firstDeriv(df, SAMPLE_RATE) # Add the derivatives to the dataframe
+# peaks = findPeaks(df) # Create an array of all of the peaks based off of the first derivative
+# doublePeaks, triplePeaks = meanCounter(peaks, ANGLE)
+# count = len(peaks) + len(doublePeaks) + 2*len(triplePeaks)
+
+
 
 # Output results
+# print(df.head())
 print("Total Peaks: " + str(len(peaks)))
-print("Double Peaks: " + str(len(doublePeaks)))
-print("Triple Peaks: " + str(len(triplePeaks)))
-print("Final Count: " + str(count))
+# print("Double Peaks: " + str(len(doublePeaks)))
+# print("Triple Peaks: " + str(len(triplePeaks)))
+# print("Final Count: " + str(count))
