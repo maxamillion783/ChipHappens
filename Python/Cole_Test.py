@@ -1,3 +1,7 @@
+#Created 11/13/2024 by Cole Barton
+#This is the first attempt at counting credit card sleeves
+
+#import necessary libraries
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -5,77 +9,128 @@ import matplotlib.pyplot as plt
 import webbrowser
 import scipy as sp
 import numpy as np
-#import math
 
 # Load the CSV file into a DataFrame
-#file = '../TestData/AP-DATA-001_trial_1_400mm_1000us_flat.csv'
-#file = '../TestData/AP-DATA-002_trial_2_400mm_1000us_stuck.csv'
-#file = '../TestData/AP-DATA-003_trial_3_400mm_1000us_less_stuck.csv'
-file = '../TestData/AP-DATA-004_10-22_trial_1_400mm_1000us_black_solid.csv'
-#file = '../TestData/AP-DATA-005_10-22_trial_2_400mm_1000us_black_solid.csv'
-#file = '../TestData/AP-DATA-006_10-22_trial_3_400mm_1000us_1000Hz_black_solid.csv'
-#file = '../TestData/AP-DATA-007_10-22_trial_4_400mm_1000us_1000Hz_white_clear.csv'
-#file = '../TestData/AP-DATA-008_10-22_trial_5_400mm_1000us_1000Hz_ambient-filter_white-clear.csv'
+#works on these files:
+#file = '../TestData/AP-DATA-016_11-12_WCC_c=60_d=30_t=1000_v=1000_ma=4_messy.csv'
+#untested:
+file = '../TestData/AP-DATA-015_11-12_BSC_c=54_d=30_t=1000_v=1000_ma=4_messy.csv'
+#does not work:
 df = pd.read_csv(file, skiprows = 11)
 
-# Display the first few rows of the DataFrame
-#print(df.head())
-#print(df['Trigger count'])
-#print(df['Trigger count'])
-
-from scipy.signal import find_peaks
-peaks, _ = find_peaks(df["OUT01(mm)"],prominence=0.15)
+#find the peaks and troughs of the sensor data using a minimum prominence and distance
+peaks, _ = sp.signal.find_peaks(df["OUT01(mm)"],prominence=0.145,distance=30)
+troughs, _ = sp.signal.find_peaks(1-df["OUT01(mm)"],prominence=0.145)
 #print(peaks)
 
-# Line plot
-fig = px.line(df, y='OUT01(mm)', title='Simple Data Visualization', markers=True)
-#fig.add_trace(px.scatter(peaks, x=df['OUT01(mm)'][peaks], y=peaks))
-fig.add_trace(go.Scatter(x=peaks, y=df['OUT01(mm)'][peaks], mode = 'markers', name='Peaks'),)
-filename = 'Data Visualization Test.html'
+#plot sensor data as a line plot with peaks and troughs
+fig = px.line(df, y='OUT01(mm)', title='Data Visualization', markers=True) #sensor data
+fig.add_trace(go.Scatter(x=peaks, y=df['OUT01(mm)'][peaks], mode = 'markers', name='Peaks'),) #peaks
+fig.add_trace(go.Scatter(x=troughs, y=df['OUT01(mm)'][troughs], mode = 'markers', name='Troughs'),) #troughs
+fig_filename = 'Sensor Data with Peaks.html'
 fig.update_layout(
     xaxis_title='Data Number',
     yaxis_title='Distance (mm)'
 )
-fig.write_html(filename, full_html = True)
 
-sampling_rate = 1000 #Hz
-fft_values = sp.fft.fft(df['OUT01(mm)'])
-#print(fft_values)
+#calculate the distance from each peak to its neighbor on the right
+distances_between_peaks = np.zeros((len(peaks)-1))
+for i in range(0,len(peaks)-1):
+    distances_between_peaks[i] = peaks[i+1]-peaks[i]
+print(peaks)
+print(distances_between_peaks)
 
-# Step 2: Get the frequency bins
-n = len(df['OUT01(mm)'])  # Number of samples
-frequencies = sp.fft.fftfreq(n, d=1/sampling_rate)
+#calculate the distance from each trough to its neighbor on the right
+distances_between_troughs = np.zeros((len(troughs)-1))
+for i in range(0,len(troughs)-1):
+    distances_between_troughs[i] = troughs[i+1]-troughs[i]
+print(troughs)
+print(distances_between_troughs)
 
-# Step 3: Compute the amplitude spectrum (magnitude of FFT values)
-amplitudes = np.abs(fft_values) / n  # Normalize amplitude
+#generate peaks and troughs histograms
+min_bin = 30
+max_bin = 150
+size_bin = 2
+num_bins = int((max_bin - min_bin) / size_bin)
+peaks_histogram = sp.ndimage.histogram(distances_between_peaks,min_bin,max_bin,num_bins)
+troughs_histogram = sp.ndimage.histogram(distances_between_troughs,min_bin,max_bin,num_bins)
 
-# Step 4: Plot the positive frequencies (since FFT is symmetric around 0)
-fig_fft = go.Figure()
-
-fig_fft.add_trace(go.Scatter(
-    x=frequencies[:n//2],        # Plot only the positive half of frequencies
-    y=amplitudes[:n//2],         # Corresponding amplitudes
-    mode='lines',
-    name='Frequency vs Amplitude'
-))
-
-# Update layout for better readability
-fig_fft.update_layout(
-    title="Frequency vs Amplitude",
-    xaxis_title="Frequency (Hz)",
-    yaxis_title="Amplitude",
-    xaxis=dict(tickformat=".1f"),
-    yaxis=dict(tickformat=".2f"),
-    template="plotly_white"
+#plot peaks histogram
+fig_peaks_histogram = px.bar(x = range(min_bin,max_bin,size_bin), y=peaks_histogram, title='Peaks Histogram')
+fig_peaks_histogram.update_layout(
+    xaxis_title='Quantity in Bin',
+    yaxis_title='Number of Samples Between Peak and its Right Neighbor'
 )
+fig_peaks_histogram_filename = 'Peaks Histogram.html'
+fig_peaks_histogram.write_html(fig_peaks_histogram_filename)
+webbrowser.open(fig_peaks_histogram_filename)
+#fig_peaks_histogram.show()
 
-fig_fft.write_html(filename, full_html = False)
-webbrowser.open(filename)
+#plot troughs histogram
+fig_troughs_histogram = px.bar(x = range(min_bin,max_bin,size_bin), y=troughs_histogram, title='Troughs Histogram')
+fig_troughs_histogram.update_layout(
+    xaxis_title='Quantity in Bin',
+    yaxis_title='Number of Samples Between Trough and its Right Neighbor'
+)
+fig_troughs_histogram_filename = 'Troughs Histogram.html'
+fig_troughs_histogram.write_html(fig_troughs_histogram_filename)
+webbrowser.open(fig_troughs_histogram_filename)
+#fig_troughs_histogram.show()
 
-#perform FFT to find the period
-#create a moving average over the last 5 periods (to account for deflection)
-#subtract the moving average from the data frame to normalize the height
-#detect a large jump in height
-#detect peaks with a minimum distance of 0.7 periods between them
-#if the distance between a peak's 2 neighbors is close to 2 periods, add 1 to the count.
-#if the distance between a peak's 2 neighbors is close to 3 periods, add 2 to the count. etc.
+#find the most common distance between peaks to figure out how far apart single stacks should be.
+#Anything larger than the cutoff will be considered a double peak.
+single_peak_distance = np.argmax(peaks_histogram) * size_bin + min_bin
+single_peak_cutoff = int(single_peak_distance * 1.5)
+single_trough_distance = np.argmax(troughs_histogram) * size_bin + min_bin
+single_trough_cutoff = int(single_trough_distance * 1.5)
+print(single_peak_cutoff)
+print(single_trough_cutoff)
+
+#create an upper bound for peaks to be considered valid, and a lower bound for troughs to be considered valid
+num_expected_peaks = 0
+expected_peaks_sum = 0
+for i in range(0,len(distances_between_peaks)):
+    if distances_between_peaks[i] == single_peak_distance:
+        num_expected_peaks += 1
+        expected_peaks_sum += df['OUT01(mm)'][peaks[i]]
+expected_peak_average = expected_peaks_sum/num_expected_peaks
+
+num_expected_troughs = 0
+expected_troughs_sum = 0
+for i in range(0,len(distances_between_troughs)):
+    if distances_between_troughs[i] == single_trough_distance:
+        num_expected_troughs += 1
+        expected_troughs_sum += df['OUT01(mm)'][troughs[i]]
+expected_trough_average = expected_troughs_sum/num_expected_troughs
+
+trough_cutoff = expected_trough_average - (expected_peak_average - expected_trough_average) * 1.0
+peak_cutoff = expected_peak_average + (expected_peak_average - expected_trough_average) * 2.5
+
+#add upper and lower bounds to line graph
+fig.add_hline(y=expected_peak_average, line_color = 'green')
+fig.add_hline(y=expected_trough_average, line_color = 'green')
+fig.add_hline(y=peak_cutoff, line_color = 'red')
+fig.add_hline(y=trough_cutoff, line_color = 'red')
+
+#Set y-axis range to only observe the valid peaks
+fig.update_yaxes(range=[trough_cutoff - 0.5, peak_cutoff + 0.5])
+
+#display line graph
+fig.write_html(fig_filename)
+webbrowser.open(fig_filename)
+#fig.show()
+
+#cound the cards
+card_count = 0
+num_invalid_peaks = 0
+for i in range(0,len(distances_between_peaks)):
+    if df['OUT01(mm)'][peaks[i]] < peak_cutoff and df['OUT01(mm)'][peaks[i]] > trough_cutoff:
+        if distances_between_peaks[i] < single_peak_cutoff:
+            card_count+=1
+        else:
+            card_count+=2
+    else:
+        num_invalid_peaks += 1
+card_count += 1 #FIXME need a way to tell if the last peak is double or single
+print(card_count)
+print(num_invalid_peaks)
