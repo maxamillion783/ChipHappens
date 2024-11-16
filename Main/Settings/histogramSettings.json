@@ -1,0 +1,5 @@
+{
+    "minBin": 30,
+    "maxBin": 150,
+    "binSize": 2
+}
