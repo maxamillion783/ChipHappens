@@ -1,8 +1,5 @@
 #create a plot showing the sensor data, peaks, etc.
 import matplotlib.pyplot as plt
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 from Settings_Interface.readSettings import dataVisulaizationSettings, histogramSettings
 from CSV_Interface.read import sensorData
 from Data_Processing.findPeaksAndTroughs import peaks,troughs

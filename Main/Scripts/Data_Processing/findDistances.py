@@ -1,9 +1,6 @@
 #calculate the distance between peaks and troughs
 import scipy as sp
 import numpy as np
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 from Data_Processing.findPeaksAndTroughs import peaks,troughs
 
 #calculate the distance from each peak to its neighbor on the right
