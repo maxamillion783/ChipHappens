@@ -1,0 +1,38 @@
+{
+    "colors": {
+        "sensorData": "black",
+        "peaks": "green",
+        "troughs": "red",
+        "averagePeakHeight": "green",
+        "averageTroughHeight": "red",
+        "peakCutoffHeight": "green",
+        "troughCutoffHeight": "red"
+    },
+    "lineStyles": {
+        "sensorData": "-",
+        "averagePeakHeight": "--",
+        "averageTroughHeight": "--",
+        "peakCutoffHeight": "-",
+        "troughCutoffHeight": "-"
+    },
+    "markerStyles": {
+        "peaks": "o",
+        "troughs": "o"
+    },
+    "showPlots": {    
+        "sensorData": true,
+        "peaks": true,
+        "troughs": true,
+        "singlePeaks": true,
+        "doublePeaks": true,
+        "averagePeakHeight": false,
+        "averageTroughHeight": false,
+        "peakCutoffHeight": true,
+        "troughCutoffHeight": true,
+        "peakHistogram": false,
+        "troughHistogram": true
+    },
+    "resizePlots": {
+        "zoomIn": true
+    }
+}
