@@ -20,7 +20,7 @@ numDoublePeaks = 0
 peakTypes = np.zeros(len(peaks),dtype=int)
 for i in range(0,len(distancesBetweenPeaks)):
     if sensorData[peaks[i]] < peakCutoffHeight and sensorData[peaks[i]] > troughCutoffHeight:
-        if sensorData[peaks[i]] - sensorData[troughs[i+1]] > 1.3 * (expectedPeakAverage - expectedTroughAverage) and distancesBetweenPeaks[i] > singlePeakCutoff:
+        if sensorData[peaks[i]] - sensorData[troughs[i]] > 1.3 * (expectedPeakAverage - expectedTroughAverage) and distancesBetweenPeaks[i] > singlePeakCutoff:
             cardCount+=2
             numDoublePeaks += 1
             peakTypes[i] = peakType.DOUBLE.value
