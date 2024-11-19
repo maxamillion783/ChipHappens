@@ -2,16 +2,16 @@
 import pandas as pd
 
 #works on these files:
-#file = '../../TestData/AP-DATA-010_11-12_BSC_c=78_d=20_t=1000_v=1000_ma=4.csv'
-#file = '../../TestData/AP-DATA-016_11-12_WCC_c=60_d=30_t=1000_v=1000_ma=4_messy.csv'
+# file = '../../TestData/AP-DATA-010_11-12_BSC_c=78_d=20_t=1000_v=1000_ma=4.csv'
+# file = '../../TestData/AP-DATA-016_11-12_WCC_c=60_d=30_t=1000_v=1000_ma=4_messy.csv'
+# file = '../../TestData/AP-DATA-015_11-12_BSC_c=54_d=30_t=1000_v=1000_ma=4_messy.csv'
+# file = '../../TestData/AP-DATA-014_11-12_BSC_c=64_d=30_t=1000_v=1000_ma=4.csv'
 
 #does not work:
-# file = '../../TestData/AP-DATA-015_11-12_BSC_c=54_d=30_t=1000_v=1000_ma=4_messy.csv'# Troughs and Peaks Don't Match
-# file = '../../TestData/AP-DATA-009_11-12_WCC_c=75_d=20_t=1000_v=1000_ma=4.csv' # Troughs and Peaks Don't Match
-# file = '../../TestData/AP-DATA-011_11-12_BSC_c=92_d=10_t=1000_v=1000_ma=4.csv' # Troughs and Peaks Don't Match, 10 degree angle is too low
-# file = '../../TestData/AP-DATA-012_11-12_WCC_c=89_d=10_t=1000_v=1000_ma=4.csv' # Returns card count of 65, 10 degree angle is too low
-# file = '../../TestData/AP-DATA-013_11-12_WCC_c=62_d=30_t=1000_v=1000_ma=4.csv' # Troughs and Peaks Don't Match
-# file = '../../TestData/AP-DATA-014_11-12_BSC_c=64_d=30_t=1000_v=1000_ma=4.csv' # Troughs and Peaks Don't Match
+# file = '../../TestData/AP-DATA-009_11-12_WCC_c=75_d=20_t=1000_v=1000_ma=4.csv' # Counted 76
+# file = '../../TestData/AP-DATA-011_11-12_BSC_c=92_d=10_t=1000_v=1000_ma=4.csv' # Counted 85, 10 degree angle is too low
+# file = '../../TestData/AP-DATA-012_11-12_WCC_c=89_d=10_t=1000_v=1000_ma=4.csv' # Returns card count of 63, 10 degree angle is too low
+# file = '../../TestData/AP-DATA-013_11-12_WCC_c=62_d=30_t=1000_v=1000_ma=4.csv' # Counted 63
 
 
 df = pd.read_csv(file, skiprows = 11)

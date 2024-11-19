@@ -5,3 +5,6 @@ from CSV_Interface.read import sensorData
 #NOTE: prominence = 0.145 works well for 30 degrees, and 
 peaks, _ = sp.signal.find_peaks(sensorData,prominence=0.125,distance=30)
 troughs, _ = sp.signal.find_peaks(1-sensorData,prominence=0.125,distance=30)
+
+if troughs[0] < peaks[0]:
+    troughs = troughs[1:]
