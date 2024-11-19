@@ -29,7 +29,7 @@
         "averageTroughHeight": false,
         "peakCutoffHeight": true,
         "troughCutoffHeight": true,
-        "peakHistogram": false,
+        "peakHistogram": true,
         "troughHistogram": false
     },
     "resizePlots": {

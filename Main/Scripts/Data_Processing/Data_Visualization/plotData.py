@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from Settings_Interface.readSettings import dataVisulaizationSettings, histogramSettings
 from CSV_Interface.read import sensorData
 from Data_Processing.findPeaksAndTroughs import peaks,troughs
-from Data_Processing.findCutoffs import troughCutoffHeight, peakCutoffHeight
+from Data_Processing.findCutoffs import troughCutoffHeight, peakCutoffHeight, singlePeakCutoff
 from Data_Processing.findHistograms import peaksHistogram, troughsHistogram
 
 #create raw data plot with peaks, troughs, cutoffs, etc.
@@ -32,6 +32,7 @@ if dataVisulaizationSettings["showPlots"]["peakHistogram"]:
     plt.title("Peaks Histogram")
     plt.xlabel("Distance Between Peak and its Right Neighbor")
     plt.ylabel("Number of Points in Bin")
+    plt.axvline(x=singlePeakCutoff, color='red', linestyle='--', label='Single Peak Cutoff')
     plt.legend()
 
 #create trough histogram plot
