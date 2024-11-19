@@ -59,7 +59,7 @@ SAMPLE_RATE = 0.001 # Sensor takes data every SAMPLE_RATE seconds
 ANGLE = 25 # Angle of the data
 
 # Load the CSV file into a DataFrame
-file = '../TestData/AP-DATA-011_11-12_BSC_c=92_d=10_t=1000_v=1000.csv'
+file = 'TestData/AP-DATA-011_11-12_BSC_c=92_d=10_t=1000_v=1000_ma=4.csv'
 df = pd.read_csv(file, skiprows = 11)
 df = df[df["OUT01(mm)"] > 0]
 

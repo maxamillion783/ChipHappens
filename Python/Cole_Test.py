@@ -11,11 +11,12 @@ import numpy as np
 #file = '../TestData/AP-DATA-001_trial_1_400mm_1000us_flat.csv'
 #file = '../TestData/AP-DATA-002_trial_2_400mm_1000us_stuck.csv'
 #file = '../TestData/AP-DATA-003_trial_3_400mm_1000us_less_stuck.csv'
-file = '../TestData/AP-DATA-004_10-22_trial_1_400mm_1000us_black_solid.csv'
+# file = '../TestData/AP-DATA-004_10-22_trial_1_400mm_1000us_black_solid.csv'
 #file = '../TestData/AP-DATA-005_10-22_trial_2_400mm_1000us_black_solid.csv'
 #file = '../TestData/AP-DATA-006_10-22_trial_3_400mm_1000us_1000Hz_black_solid.csv'
 #file = '../TestData/AP-DATA-007_10-22_trial_4_400mm_1000us_1000Hz_white_clear.csv'
 #file = '../TestData/AP-DATA-008_10-22_trial_5_400mm_1000us_1000Hz_ambient-filter_white-clear.csv'
+file = 'TestData/AP-DATA-011_11-12_BSC_c=92_d=10_t=1000_v=1000_ma=4.csv'
 df = pd.read_csv(file, skiprows = 11)
 
 # Display the first few rows of the DataFrame

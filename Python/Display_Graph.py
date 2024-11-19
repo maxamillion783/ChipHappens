@@ -9,6 +9,6 @@ def processCsv(name):
 
 
 if __name__ == "__main__":
-    d=processCsv("AP-DATA-006_10-22_trial_3_400mm_1000us_1000Hz_black_solid.csv");
+    d=processCsv("AP-DATA-014_11-12_BSC_c=64_d=30_t=1000_v=1000_ma=4.csv");
     plt.plot([float(x[1]) for x in d])
     plt.show()
