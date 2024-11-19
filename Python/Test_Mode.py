@@ -35,9 +35,6 @@ def modeCounter(peaks):
     for i in range(len(peaks)-1):
         distance[i] = peaks[i+1]-peaks[i]
 
-    # plt.hist(distance, bins=30, edgecolor='black', color='skyblue')
-    # plt.show()
-
     mode_value = stats.mode(distance, keepdims=True)[0][0]
     print(mode_value)
 
@@ -50,6 +47,9 @@ def modeCounter(peaks):
         elif distance[i] >= doubleCuttoff:
             count = count + 1 
     print("Count:" + str(count))
+
+    plt.hist(distance, bins=30, edgecolor='black', color='skyblue')
+    plt.show()
 
 
 SAMPLE_RATE = 0.001 # Sensor takes data every SAMPLE_RATE seconds

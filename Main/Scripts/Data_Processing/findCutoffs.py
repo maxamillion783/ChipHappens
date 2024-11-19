@@ -11,6 +11,8 @@ singlePeakDistance = np.argmax(peaksHistogram) * histogramSettings["binSize"] + 
 singlePeakCutoff = int(singlePeakDistance * 1.5)
 singleTroughDistance = np.argmax(troughsHistogram) * histogramSettings["binSize"] + histogramSettings["minBin"]
 singleTroughCutoff = int(singleTroughDistance * 1.5)
+print("Average distance between peaks: ", singlePeakDistance)
+
 
 #create an upper bound for peaks to be considered valid, and a lower bound for troughs to be considered valid
 numExpectedPeaks = 0
