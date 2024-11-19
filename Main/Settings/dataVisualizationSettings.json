@@ -30,7 +30,7 @@
         "peakCutoffHeight": true,
         "troughCutoffHeight": true,
         "peakHistogram": false,
-        "troughHistogram": true
+        "troughHistogram": false
     },
     "resizePlots": {
         "zoomIn": true

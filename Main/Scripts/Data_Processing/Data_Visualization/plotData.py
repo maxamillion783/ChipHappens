@@ -6,6 +6,7 @@ from Data_Processing.findPeaksAndTroughs import peaks,troughs
 from Data_Processing.findCutoffs import troughCutoffHeight, peakCutoffHeight
 from Data_Processing.findHistograms import peaksHistogram, troughsHistogram
 
+#create raw data plot with peaks, troughs, cutoffs, etc.
 plt.figure("Raw Data")
 if dataVisulaizationSettings["showPlots"]["sensorData"]:
     plt.plot(sensorData, label="Sensor Data", color=dataVisulaizationSettings["colors"]["sensorData"])
@@ -17,12 +18,14 @@ if dataVisulaizationSettings["showPlots"]["peakCutoffHeight"]:
     plt.axhline(y=peakCutoffHeight, color=dataVisulaizationSettings["colors"]["peakCutoffHeight"], linestyle=dataVisulaizationSettings["lineStyles"]["peakCutoffHeight"], label='Peak Cutoff Height')
 if dataVisulaizationSettings["showPlots"]["troughCutoffHeight"]:
     plt.axhline(y=troughCutoffHeight, color=dataVisulaizationSettings["colors"]["troughCutoffHeight"], linestyle=dataVisulaizationSettings["lineStyles"]["troughCutoffHeight"], label='Trough Cutoff Height')
-
+if dataVisulaizationSettings["resizePlots"]["zoomIn"]:
+    plt.ylim(troughCutoffHeight-0.1,peakCutoffHeight+0.1)
 plt.title("Raw Data")
 plt.xlabel("Index")
 plt.ylabel("Distance")
 plt.legend()
 
+#create peak histogram plot
 if dataVisulaizationSettings["showPlots"]["peakHistogram"]:
     plt.figure("Peaks Histogram")
     plt.bar(range(histogramSettings["minBin"],histogramSettings["maxBin"],histogramSettings["binSize"]), peaksHistogram, label='Peaks Histogram')
@@ -31,6 +34,7 @@ if dataVisulaizationSettings["showPlots"]["peakHistogram"]:
     plt.ylabel("Number of Points in Bin")
     plt.legend()
 
+#create trough histogram plot
 if dataVisulaizationSettings["showPlots"]["troughHistogram"]:
     plt.figure("Troughs Histogram")
     plt.bar(range(histogramSettings["minBin"],histogramSettings["maxBin"],histogramSettings["binSize"]), troughsHistogram, label='Troughs Histogram')
@@ -39,4 +43,5 @@ if dataVisulaizationSettings["showPlots"]["troughHistogram"]:
     plt.ylabel("Number of Points in Bin")
     plt.legend()
 
+#make it so the code still runs while the plot is open
 plt.show(block=False)
