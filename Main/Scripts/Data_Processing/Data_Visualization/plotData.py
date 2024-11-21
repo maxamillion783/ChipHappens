@@ -1,7 +1,7 @@
 #create a plot showing the sensor data, peaks, etc.
 import matplotlib.pyplot as plt
 from Settings_Interface.readSettings import dataVisulaizationSettings, histogramSettings
-from CSV_Interface.read import sensorData
+from Data_Processing.truncateBadData import sensorData
 from Data_Processing.findPeaksAndTroughs import peaks,troughs
 from Data_Processing.findCutoffs import troughCutoffHeight, peakCutoffHeight, singlePeakCutoff
 from Data_Processing.findHistograms import peaksHistogram, troughsHistogram

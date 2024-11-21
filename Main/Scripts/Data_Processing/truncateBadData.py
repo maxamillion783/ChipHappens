@@ -56,7 +56,5 @@ for i in range(len(df)-1):
         interpolatedX, interpolatedY = linearlyInterpolate(x1, y1, x2, y2)
         df.iloc[interpolatedX, df.columns.get_loc('OUT01(mm)')] = interpolatedY
 
-print(df)
-
 sensorData = df["OUT01(mm)"]
 sensorDataQuality = df.iloc[:,2]

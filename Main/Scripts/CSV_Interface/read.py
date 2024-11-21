@@ -2,7 +2,7 @@
 import pandas as pd
 
 #works on these files:
-# file = '../../TestData/AP-DATA-010_11-12_BSC_c=78_d=20_t=1000_v=1000_ma=4.csv'
+file = '../../TestData/AP-DATA-010_11-12_BSC_c=78_d=20_t=1000_v=1000_ma=4.csv'
 # file = '../../TestData/AP-DATA-016_11-12_WCC_c=60_d=30_t=1000_v=1000_ma=4_messy.csv'
 # file = '../../TestData/AP-DATA-015_11-12_BSC_c=54_d=30_t=1000_v=1000_ma=4_messy.csv'
 # file = '../../TestData/AP-DATA-014_11-12_BSC_c=64_d=30_t=1000_v=1000_ma=4.csv'

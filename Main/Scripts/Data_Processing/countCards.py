@@ -5,7 +5,7 @@ from Data_Processing.findCutoffs import peakCutoffHeight, troughCutoffHeight,exp
 # import sys
 # import os
 # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
-from CSV_Interface.read import sensorData
+from Data_Processing.truncateBadData import sensorData
 from enum import Enum
 
 class peakType(Enum):

@@ -3,7 +3,7 @@ from Settings_Interface.readSettings import histogramSettings
 from Data_Processing.findPeaksAndTroughs import peaks,troughs
 from Data_Processing.findHistograms import peaksHistogram, troughsHistogram
 from Data_Processing.findDistances import distancesBetweenPeaks, distancesBetweenTroughs
-from CSV_Interface.read import sensorData, sensorDataQuality
+from Data_Processing.truncateBadData import sensorData, sensorDataQuality
 
 #find the most common distance between peaks to figure out how far apart single stacks should be.
 #Anything larger than the cutoff will be considered a double peak.
