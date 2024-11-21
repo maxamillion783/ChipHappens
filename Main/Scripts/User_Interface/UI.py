@@ -6,6 +6,10 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 import openpyxl
 
+#The on-screen keyboard doesnt work. I think the problem is that when you click on the keyboard, it deselects the text box. Also, the whole UI looks stupid and ugly.
+
+
+
 
 class MainLayout(BoxLayout):
     def __init__(self, **kwargs):
