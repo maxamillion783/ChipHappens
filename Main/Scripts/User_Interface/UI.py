@@ -38,6 +38,8 @@ class MainLayout(BoxLayout):
         for key in keys:
             button = Button(text=key, on_release=self.key_pressed, font_size=20)
             self.keyboard_layout.add_widget(button)
+        self.backspace = Button(text="Backspace", on_release=self.key_pressed, font_size=20)
+        self.keyboard_layout.add_widget(self.backspace)
         self.add_widget(self.keyboard_layout)
 
         # Submit and Exit Buttons
@@ -55,7 +57,10 @@ class MainLayout(BoxLayout):
             self.name_input.text += instance.text
         elif self.date_input.focus:
             self.date_input.text += instance.text'''
-        if self.last_focused:
+        if instance == self.backspace:
+            new_text = self.last_focused.text[:-1]
+            self.last_focused.text = new_text
+        elif self.last_focused:
             self.last_focused.text += instance.text
 
     def submit_data(self, instance):
