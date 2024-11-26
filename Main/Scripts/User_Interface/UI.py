@@ -81,8 +81,10 @@ class MainLayout(BoxLayout):
         self.date_input.text = ""
     
     def track_focus(self, instance, value):
+        instance.background_color = (1,1,1,1)
         if value:
             self.last_focused = instance
+            self.last_focused.background_color = (0.078, 0.549, 1, 0.9)
         '''elif self.last_focused == instance:
             self.last_focused = None'''
     
