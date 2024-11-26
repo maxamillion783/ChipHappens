@@ -21,6 +21,10 @@ class MainLayout(BoxLayout):
         self.name_input = TextInput(hint_text="Enter Name", multiline=False, font_size=24)
         self.date_input = TextInput(hint_text="Enter Date (YYYY-MM-DD)", multiline=False, font_size=24)
 
+        self.last_focused = None
+        self.name_input.bind(focus=self.track_focus)
+        self.date_input.bind(focus=self.track_focus);
+
         # Adding labels and text inputs
         self.add_widget(Label(text="Name", font_size=24))
         self.add_widget(self.name_input)
@@ -45,11 +49,14 @@ class MainLayout(BoxLayout):
         self.add_widget(self.button_layout)
 
     def key_pressed(self, instance):
+        #print(f'button pressed: {instance.text}, name focus: {self.name_input.focus}, date focus: {self.date_input.focus}, last focus {self.last_focused}')
         # Detects the active TextInput and inserts the key pressed
-        if self.name_input.focus:
+        '''if self.name_input.focus:
             self.name_input.text += instance.text
         elif self.date_input.focus:
-            self.date_input.text += instance.text
+            self.date_input.text += instance.text'''
+        if self.last_focused:
+            self.last_focused.text += instance.text
 
     def submit_data(self, instance):
         name = self.name_input.text
@@ -72,7 +79,13 @@ class MainLayout(BoxLayout):
         # Clear inputs after submitting
         self.name_input.text = ""
         self.date_input.text = ""
-
+    
+    def track_focus(self, instance, value):
+        if value:
+            self.last_focused = instance
+        '''elif self.last_focused == instance:
+            self.last_focused = None'''
+    
     def exit_app(self, instance):
         App.get_running_app().stop()
 
