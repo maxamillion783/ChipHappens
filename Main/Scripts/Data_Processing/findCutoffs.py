@@ -1,6 +1,22 @@
 import numpy as np
 from Settings_Interface.readSettings import histogramSettings
 
+"""
+@brief findCutoffs uses the histograms to determine the cutoff values for the card counter
+@param peaks array containing all found peaks
+@param troughs array containing all found troughs
+@param peaksHistogram histogram of all peak widths
+@param troughsHistogram histogram of all trough widths 
+@param distancesBetweenPeaks array containing all of the x distances between peaks
+@param distancesBetweenTroughs array containing all of the x distances between troughs
+@param sensorData array containing all of the sensor readings
+@param sensorDataQuality array of sensor data qualities (either ALARM or GO for every data point)
+@return peakCutoffHeight height above which peaks are considered invalid
+@return troughCutoffHeight height below which troughs are considered invalid
+@return expectedPeakAverage expected distance between peaks for one card
+@return expectedTroughAverage expected distance between troughs for one card
+@return singlePeakCutoff distance betweeen peaks at which peaks begin to be double counted
+"""
 def findCutoffs(peaks, troughs, peaksHistogram, troughsHistogram, distancesBetweenPeaks, distancesBetweenTroughs, sensorData, sensorDataQuality):
     #find the most common distance between peaks to figure out how far apart single stacks should be.
     #Anything larger than the cutoff will be considered a double peak.
@@ -31,4 +47,4 @@ def findCutoffs(peaks, troughs, peaksHistogram, troughsHistogram, distancesBetwe
     troughCutoffHeight = expectedTroughAverage - (expectedPeakAverage - expectedTroughAverage) * 1.0
     peakCutoffHeight = expectedPeakAverage + (expectedPeakAverage - expectedTroughAverage) * 2.5
 
-    return peakCutoffHeight, troughCutoffHeight,expectedPeakAverage,expectedTroughAverage,singlePeakCutoff
+    return peakCutoffHeight, troughCutoffHeight, expectedPeakAverage, expectedTroughAverage, singlePeakCutoff

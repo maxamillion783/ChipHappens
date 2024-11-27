@@ -1,5 +1,11 @@
 import scipy as sp
 
+"""
+@brief finds peaks and troughs in the card data using the scipy.signal.find_peaks function
+@param sensorData array containing all of the sensor readings
+@return peaks array containing all found peaks
+@return troughs array containing all found troughs
+"""
 def findPeaksAndTroughs(sensorData):
     #find the peaks and troughs of the sensor data using a minimum prominence and distance
     #NOTE: prominence = 0.145 works well for 30 degrees, and 
