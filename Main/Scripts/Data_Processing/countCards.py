@@ -46,4 +46,4 @@ def countCards(peaks, troughs, distancesBetweenPeaks, peakCutoffHeight, troughCu
     print("Invalid Peaks: ", numInvalidPeaks)
     print("Double Peaks: ", numDoublePeaks)
 
-    return cardCount
+    return cardCount, numInvalidPeaks, numDoublePeaks
