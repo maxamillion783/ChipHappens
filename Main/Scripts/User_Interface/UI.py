@@ -23,7 +23,7 @@ class MainLayout(BoxLayout):
 
         self.last_focused = None
         self.name_input.bind(focus=self.track_focus)
-        self.date_input.bind(focus=self.track_focus);
+        self.date_input.bind(focus=self.track_focus)
 
         # Adding labels and text inputs
         self.add_widget(Label(text="Name", font_size=24))
@@ -33,12 +33,13 @@ class MainLayout(BoxLayout):
         self.add_widget(self.date_input)
 
         # On-screen keyboard (simple with only numbers and letters for example purposes)
-        self.keyboard_layout = GridLayout(cols=10, size_hint_y=None, height=200)
-        keys = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        self.keyboard_layout = GridLayout(cols=11, size_hint_y=None, height=100)
+        # keys = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        keys = '1234567890'
         for key in keys:
             button = Button(text=key, on_release=self.key_pressed, font_size=20)
             self.keyboard_layout.add_widget(button)
-        self.backspace = Button(text="Backspace", on_release=self.key_pressed, font_size=20)
+        self.backspace = Button(text="Delete", on_release=self.key_pressed, font_size=20)
         self.keyboard_layout.add_widget(self.backspace)
         self.add_widget(self.keyboard_layout)
 
@@ -51,7 +52,7 @@ class MainLayout(BoxLayout):
         self.add_widget(self.button_layout)
 
     def key_pressed(self, instance):
-        #print(f'button pressed: {instance.text}, name focus: {self.name_input.focus}, date focus: {self.date_input.focus}, last focus {self.last_focused}')
+        # print(f'button pressed: {instance.text}, name focus: {self.name_input.focus}, date focus: {self.date_input.focus}, last focus {self.last_focused}')
         # Detects the active TextInput and inserts the key pressed
         '''if self.name_input.focus:
             self.name_input.text += instance.text
@@ -90,8 +91,6 @@ class MainLayout(BoxLayout):
         if value:
             self.last_focused = instance
             self.last_focused.background_color = (0.078, 0.549, 1, 0.9)
-        '''elif self.last_focused == instance:
-            self.last_focused = None'''
     
     def exit_app(self, instance):
         App.get_running_app().stop()
@@ -103,4 +102,5 @@ class MyApp(App):
 
 
 if __name__ == "__main__":
-    MyApp().run()
+    a = MyApp()
+    a.run()

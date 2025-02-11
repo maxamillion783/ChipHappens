@@ -7,9 +7,13 @@ import pandas as pd
 @return sensorData array of sensor readings
 @return sensorDataQuality array of sensor data qualities (either ALARM or GO for every data point)
 """
-def read(file):
+def read(file, returnJourney=False):
     df = pd.read_csv(file, skiprows = 11)
     sensorData = df["OUT01(mm)"]
     sensorDataQuality = df.iloc[:,2]
+    
+    if returnJourney:
+        sensorData.iloc[::-1].reset_index(drop=True)
+        sensorDataQuality.iloc[::-1].reset_index(drop=True)
 
     return sensorData, sensorDataQuality
