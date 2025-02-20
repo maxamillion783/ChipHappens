@@ -26,9 +26,9 @@ const byte STEP_PIN = 9;   //Rising signal -> step motor once
 const byte DIR_PIN = 10;    //LOW -> clockwise?, HIGH -> counterclockwise?
 
 // Define motor parameters
-const float MAX_SPEED = 1000.0;   //[steps per second]
-const float ACCELERATION = 1000.0; //[steps per second]
-const float HOMING_SPEED = 200.0; //Slower speed for homing sequence [steps per second]
+const float MAX_SPEED = 1500.0;   //[steps per second]
+const float ACCELERATION = 1500.0; //[steps per second]
+const float HOMING_SPEED = 500.0; //Slower speed for homing sequence [steps per second]
 
 //Create a stepper motor object using 2-wire constructor
 AccelStepper stepper(AccelStepper::FULL2WIRE, STEP_PIN, DIR_PIN);
