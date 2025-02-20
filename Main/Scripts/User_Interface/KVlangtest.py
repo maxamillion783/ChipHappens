@@ -153,13 +153,14 @@ KV = '''
 <TotalPanel>:
     BoxLayout: 
         orientation: 'vertical'
-        spacing: 1
+        spacing: 0
         padding: 10
         GridLayout:
-            cols: 2
+            cols: 3
             rows: 1
             padding: 10
             spacing: 2
+            size_hint_y: 0.5
             Label:
                 text: "Running Total"
                 color: (0,0,0,1)
@@ -173,20 +174,130 @@ KV = '''
                 size_hint: (0.2, None)
                 height: 36
                 readonly: True
+            BoxLayout:
+                padding: 10
+                spacing: 0
+                size_hint_x: 0.1
+                Button:
+                    text: "Print"
+                    background_normal: ''
+                    background_color: (1, 0.1, 0.2, 1)
+                    canvas.before:
+                        Color: 
+                            rgba: (0,0,0, 1)
+                        Line:
+                            width: 2
+                            rectangle: self.x, self.y, self.width, self.height
+        GridLayout:
+            cols: 3
+            # padding: 10
+            spacing: 2
+            size_hint_y: 0.4
+            size_hint_x: 0.5
+
+            Label:
+                text: "Time"
+                color: (0,0,0,1)
+                font_size: 18
+                size_hint: (0.2, None)
+                height: 36
+            Label:
+                text: "Count"
+                color: (0,0,0,1)
+                font_size: 18
+                size_hint: (0.2, None)
+                height: 36
+            Label:
+                text: "Metrics"
+                color: (0,0,0,1)
+                font_size: 18
+                size_hint: (0.2, None)
+                height: 36
         GridLayout:
             cols: 1
-            padding: 10
             spacing: 2
+            size_hint_x: 0.5
             ScrollView:
                 do_scroll_x: False
                 do_scroll_y: True
-                Label:
-                    text: 
-                        "Scroll\\n" * 100
-                    color: (0,0,0,1)
-                    font_size: 18
-                    size_hint: (0.2, None)
-                    height: 36
+                size_hint_y: None
+                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                # size_y: 600
+                canvas.before:
+                    Color:
+                        rgba: 0, 0, 0, 1
+                    Line:
+                        width:2
+                        rectangle: (self.x, self.y, self.width, self.height)
+                GridLayout:
+                    cols: 3
+                    size_hint_y: None
+                    height: self.minimum_height
+                    # padding: 10
+                    spacing: 2
+                    Label:
+                        text: 
+                            "Scroll"
+                        color: (0,0,0,1)
+                        font_size: 18
+                        size_hint: (0.2, None)
+                        height: 36
+                    Label:
+                        text: 
+                            "Scroll"
+                        color: (0,0,0,1)
+                        font_size: 18
+                        size_hint: (0.2, None)
+                        height: 36
+                    Label:
+                        text: 
+                            "Scroll"
+                        color: (0,0,0,1)
+                        font_size: 18
+                        size_hint: (0.2, None)
+                        height: 36
+                    Label:
+                        text: 
+                            "Scroll"
+                        color: (0,0,0,1)
+                        font_size: 18
+                        size_hint: (0.2, None)
+                        height: 36
+                    Label:
+                        text: 
+                            "Scroll"
+                        color: (0,0,0,1)
+                        font_size: 18
+                        size_hint: (0.2, None)
+                        height: 36
+                    Label:
+                        text: 
+                            "Scroll"
+                        color: (0,0,0,1)
+                        font_size: 18
+                        size_hint: (0.2, None)
+                        height: 36
+                    Label:
+                        text: 
+                            "Scroll"
+                        color: (0,0,0,1)
+                        font_size: 18
+                        size_hint: (0.2, None)
+                        height: 36
+                    Label:
+                        text: 
+                            "Scroll"
+                        color: (0,0,0,1)
+                        font_size: 18
+                        size_hint: (0.2, None)
+                        height: 36
+                    Label:
+                        text: 
+                            "Scroll"
+                        color: (0,0,0,1)
+                        font_size: 18
+                        size_hint: (0.2, None)
+                        height: 36
 
 
 BoxLayout:
@@ -233,6 +344,11 @@ BoxLayout:
             Rectangle:
                 pos: self.pos
                 size: self.size
+            Color:
+                rgb: (0,0,0)
+            Line:
+                width:2
+                rectangle: (self.x, self.y, self.width, self.height)
 '''
 
 class JobInfoPanel(BoxLayout):
