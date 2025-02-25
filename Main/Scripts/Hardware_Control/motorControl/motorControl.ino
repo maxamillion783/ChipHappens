@@ -64,7 +64,8 @@ void loop() {
         //Perform homing sequence
         homeMotor();
       } else {
-        Serial.println("Error: Tray out of position.");
+        //Serial.println("Error: Tray out of position.");
+        Serial.println("0");
       }
     }
     //If scan is commanded, the tray is in position, and it's already been homed, run scanning sequence
@@ -74,17 +75,19 @@ void loop() {
           //Perform scan sequence
           performScan();
         } else {
-          Serial.println("Error: Tray out of position.");
+          //Serial.println("Error: Tray out of position.");
+          Serial.println("0");
         }
       } else {
-        Serial.println("Error: Motor not homed. Perform homing first.");
+        //Serial.println("Error: Motor not homed. Perform homing first.");
+        Serial.println("0");
       }
     }
   }
 }
 
 void homeMotor() {
-  Serial.println("Starting homing sequence...");
+  //Serial.println("Starting homing sequence...");
 
   //Move motor to the right until the right limit switch is pressed
   stepper.setSpeed(HOMING_SPEED);
@@ -92,7 +95,8 @@ void homeMotor() {
     if (digitalRead(TRAY_POSITION_PIN) == LOW){
       stepper.runSpeed();
     } else {
-      Serial.println("Error: Tray out of position.");
+      //Serial.println("Error: Tray out of position.");
+      Serial.println("0");
       stepper.stop();
       return;
     }
@@ -106,7 +110,8 @@ void homeMotor() {
     if (digitalRead(TRAY_POSITION_PIN) == LOW){
       stepper.runSpeed();
     } else {
-      Serial.println("Error: Tray out of position.");
+      //Serial.println("Error: Tray out of position.");
+      Serial.println("0");
       stepper.stop();
       return;
     }
@@ -117,7 +122,7 @@ void homeMotor() {
   stepsBetweenSwitches = -stepper.currentPosition();
   stepper.setCurrentPosition(0); //Set the current position as 0
 
-  Serial.println("Homing complete. Steps between switches: " + String(stepsBetweenSwitches));
+  //Serial.println("Homing complete. Steps between switches: " + String(stepsBetweenSwitches));
   isHomed = true;
 }
 
@@ -130,12 +135,14 @@ void performScan() {
     stepper.run();
     //Check if either limit switch is pressed after each step
     if (digitalRead(LEFT_LIMIT_SWITCH_PIN) == LOW || digitalRead(RIGHT_LIMIT_SWITCH_PIN) == LOW) {
-      Serial.println("Scan unsuccessful: Limit switch triggered.");
+      //Serial.println("Scan unsuccessful: Limit switch triggered.");
+      Serial.println("0");
       stepper.stop();
       isHomed = false;
       return;
     } else if (digitalRead(TRAY_POSITION_PIN) == HIGH){
-      Serial.println("Error: Tray out of position.");
+      //Serial.println("Error: Tray out of position.");
+      Serial.println("0");
       stepper.stop();
       isHomed = false;
       return;
@@ -149,11 +156,13 @@ void performScan() {
     // Check if either limit switch is pressed after each step
     if (digitalRead(LEFT_LIMIT_SWITCH_PIN) == LOW || digitalRead(RIGHT_LIMIT_SWITCH_PIN) == LOW) {
       stepper.stop();
-      Serial.println("Scan unsuccessful: Limit switch triggered.");
+      //Serial.println("Scan unsuccessful: Limit switch triggered.");
+      Serial.println("0");
       isHomed = false;
       return;
     }
   }
 
-  Serial.println("Scan successful.");
+  //Serial.println("Scan successful.");
+  Serial.println("1");
 }
