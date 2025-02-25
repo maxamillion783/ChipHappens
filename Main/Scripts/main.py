@@ -38,7 +38,7 @@ def countFile(file, returnJourney=False):
         print(f"Error opening serial port: {e}")
         exit()
     # Send command to arduino to start running
-    ser.write("S")
+    ser.write('H'.encode())
     # Call main() in "Sensor Data Collection.py"
     collectionsuccessful = collectData()
     if collectionsuccessful:
