@@ -40,6 +40,9 @@ class TotalPanel(BoxLayout):
         self.ids.p_scroll.add_widget(Label(text=time,font_size=18,size_hint=(0.2,None),height=36 ))
 
 
+class KeyboardPanel(BoxLayout):
+    pass
+
 class MyApp(App):
 
     running = False
