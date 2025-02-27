@@ -86,7 +86,8 @@
     BoxLayout:
         orientation: 'vertical'
         spacing: 2
-        padding: 10    
+        padding: 10   
+        size_hint_x: 0.2 
         Button:
             text: "Update Info"
             on_press: root.update_last_operator()
@@ -242,6 +243,7 @@
                         rectangle: (self.x, self.y, self.width, self.height)
                 GridLayout:
                     cols: 3
+                    id: p_scroll
                     size_hint_y: None
                     height: self.minimum_height
                     # padding: 10

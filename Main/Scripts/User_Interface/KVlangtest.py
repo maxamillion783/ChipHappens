@@ -6,6 +6,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.lang import Builder
 from kivy.clock import Clock
+from kivy.uix.label import Label
 
 class JobInfoPanel(BoxLayout):
     job_info = {'jid': None, 'sjid': None, 'bid': None, 'oid': None}
@@ -28,10 +29,16 @@ class CountPanel(BoxLayout):
     def update_data(self, cnt, cnf):
         self.ids.cnt.text = str(cnt)
         self.ids.cnf.text = str(cnf)
-        self.ids.tim.text = str(datetime.now())
+        self.ids.tim.text = datetime.now().strftime('%m%d%Y %H:%M:%S')
 
 class TotalPanel(BoxLayout):
-    pass
+    past = []
+    def update_total(self, cnt, cnf, time):
+        
+        self.ids.p_scroll.add_widget(Label(text=str(cnt),font_size=18,size_hint=(0.2,None),height=36 ))
+        self.ids.p_scroll.add_widget(Label(text=str(cnf),font_size=18,size_hint=(0.2,None),height=36 ))
+        self.ids.p_scroll.add_widget(Label(text=time,font_size=18,size_hint=(0.2,None),height=36 ))
+
 
 class MyApp(App):
 
