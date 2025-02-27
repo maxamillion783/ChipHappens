@@ -4,9 +4,12 @@ import datetime
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.textinput import TextInput
 from kivy.lang import Builder
 from kivy.clock import Clock
 from kivy.uix.label import Label
+from kivy.properties import ObjectProperty
+
 
 class JobInfoPanel(BoxLayout):
     job_info = {'jid': None, 'sjid': None, 'bid': None, 'oid': None}
@@ -23,6 +26,7 @@ class JobInfoPanel(BoxLayout):
     
     def get_job_info(self):
         return self.job_info
+    
 
 class CountPanel(BoxLayout):
     # pass
@@ -39,9 +43,26 @@ class TotalPanel(BoxLayout):
         self.ids.p_scroll.add_widget(Label(text=str(cnf),font_size=18,size_hint=(0.2,None),height=36 ))
         self.ids.p_scroll.add_widget(Label(text=time,font_size=18,size_hint=(0.2,None),height=36 ))
 
+class CustomTextInput(TextInput):
+    """A custom TextInput that updates the active text input in the App when focused."""
+    def on_focus(self, instance, value):
+        if value:  # When focused
+            App.get_running_app().active_text_input = self  # Store reference in the App
 
 class KeyboardPanel(BoxLayout):
-    pass
+    def enter_number(self, number):
+        """Insert the number into the currently selected text input."""
+        active_text_input = App.get_running_app().active_text_input  # Get active input
+        if active_text_input:
+            active_text_input.text += str(number)
+            active_text_input.focus = True  # Restore focus
+
+    def backspace(self):
+        """Remove the last character from the currently selected text input."""
+        active_text_input = App.get_running_app().active_text_input  # Get active input
+        if active_text_input and active_text_input.text:
+            active_text_input.text = active_text_input.text[:-1]
+            active_text_input.focus = True  # Restore focus
 
 class MyApp(App):
     init = True
@@ -50,6 +71,7 @@ class MyApp(App):
     jinfop = None
     cpanel = None
     tpanel = None
+    active_text_input = ObjectProperty(None)
 
     running = False
     def build(self):
