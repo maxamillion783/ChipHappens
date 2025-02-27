@@ -1,4 +1,4 @@
-import CL3wrap
+import Sensor_Interface.CL3wrap as CL3wrap
 import ctypes
 import sys
 import time
@@ -17,7 +17,7 @@ def collectData(ser):
     ethernetConfig.abyIpAddress[2] = 63   
     ethernetConfig.abyIpAddress[3] = 100  
     ethernetConfig.wPortNo = 24685        
-    timeout = 10000  
+    timeout = 10000 
     samples = []  # Array for storeing measurement values
     measurementDataAll = []  # Array for saving data to .csv
     
