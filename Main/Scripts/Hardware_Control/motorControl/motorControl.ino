@@ -7,23 +7,23 @@ the lattePanda's onboard microcontroller.
 
 #include <AccelStepper.h>
 
-// //Limit switch pins
-// const byte LEFT_LIMIT_SWITCH_PIN = 11; //Limit switch on the left end of the rail
-// const byte RIGHT_LIMIT_SWITCH_PIN = 12; //Limit switch on the right end of the rail
-// const byte TRAY_POSITION_PIN = 13; //Switch to tell whether the tray is in position for a scan
-// //Motor driver pins
-// const byte ENABLE_PIN = 57; //LOW -> allow motion, HIGH -> block motion
-// const byte STEP_PIN = 56;   //Rising signal -> step motor once
-// const byte DIR_PIN = 55;    //LOW -> clockwise?, HIGH -> counterclockwise?
+ //Limit switch pins
+ const byte LEFT_LIMIT_SWITCH_PIN = 11; //Limit switch on the left end of the rail
+ const byte RIGHT_LIMIT_SWITCH_PIN = 12; //Limit switch on the right end of the rail
+ const byte TRAY_POSITION_PIN = 13; //Switch to tell whether the tray is in position for a scan
+ //Motor driver pins
+ const byte ENABLE_PIN = 5; //LOW -> allow motion, HIGH -> block motion
+ const byte STEP_PIN = 6;   //Rising signal -> step motor once
+ const byte DIR_PIN = 4;    //LOW -> clockwise?, HIGH -> counterclockwise?
 
-//Limit switch pins
-const byte LEFT_LIMIT_SWITCH_PIN = 2; //Limit switch on the left end of the rail
-const byte RIGHT_LIMIT_SWITCH_PIN = 3; //Limit switch on the right end of the rail
-const byte TRAY_POSITION_PIN = 4; //Switch to tell whether the tray is in position for a scan
-//Motor driver pins
-const byte ENABLE_PIN = 8; //LOW -> allow motion, HIGH -> block motion
-const byte STEP_PIN = 9;   //Rising signal -> step motor once
-const byte DIR_PIN = 10;    //LOW -> clockwise?, HIGH -> counterclockwise?
+////Limit switch pins
+//const byte LEFT_LIMIT_SWITCH_PIN = 2; //Limit switch on the left end of the rail
+//const byte RIGHT_LIMIT_SWITCH_PIN = 3; //Limit switch on the right end of the rail
+//const byte TRAY_POSITION_PIN = 4; //Switch to tell whether the tray is in position for a scan
+////Motor driver pins
+//const byte ENABLE_PIN = 8; //LOW -> allow motion, HIGH -> block motion
+//const byte STEP_PIN = 9;   //Rising signal -> step motor once
+//const byte DIR_PIN = 10;    //LOW -> clockwise?, HIGH -> counterclockwise?
 
 // Define motor parameters
 const float MAX_SPEED = 1500.0;   //[steps per second]
@@ -61,19 +61,18 @@ void loop() {
 
     //If homing sequence is commanded and the tray is in position, run homing sequence
     if (command == 'H') {
-      homeMotor();
-      // if (digitalRead(TRAY_POSITION_PIN) == LOW){
-      //   //Perform homing sequence
-      //   homeMotor();
-      // } else {
-      //   //Serial.println("Error: Tray out of position.");
-      //   Serial.println("0");
-      // }
+      if (digitalRead(TRAY_POSITION_PIN) == HIGH){
+        //Perform homing sequence
+        homeMotor();
+      } else {
+        //Serial.println("Error: Tray out of position.");
+        Serial.println("0");
+      }
     }
     //If scan is commanded, the tray is in position, and it's already been homed, run scanning sequence
     else if (command == 'S') {
       if (isHomed) {
-        if (digitalRead(TRAY_POSITION_PIN) == LOW) {
+        if (digitalRead(TRAY_POSITION_PIN) == HIGH) {
           //Perform scan sequence
           performScan();
         } else {
@@ -95,15 +94,14 @@ void homeMotor() {
   stepper.setSpeed(HOMING_SPEED);
   long startTime = millis();
   while (digitalRead((RIGHT_LIMIT_SWITCH_PIN) == HIGH) && (millis() - startTime < 10000)) {
-    stepper.runSpeed();
-    // if (digitalRead(TRAY_POSITION_PIN) == LOW){
-    //   stepper.runSpeed();
-    // } else {
-    //   //Serial.println("Error: Tray out of position.");
-    //   Serial.println("0");
-    //   stepper.stop();
-    //   return;
-    // }
+    if (true){//digitalRead(TRAY_POSITION_PIN) == HIGH){
+      stepper.runSpeed();
+    } else {
+      //Serial.println("Error: Tray out of position.");
+      Serial.println("0");
+      stepper.stop();
+      return;
+    }
   }
   stepper.stop();
   stepper.setCurrentPosition(0); //Temporarily set the current position as 0
@@ -112,15 +110,14 @@ void homeMotor() {
   stepper.setSpeed(-HOMING_SPEED);
   startTime = millis();
   while ((digitalRead(LEFT_LIMIT_SWITCH_PIN) == HIGH) && (millis() - startTime < 10000)) {
-    stepper.runSpeed();
-    // if (digitalRead(TRAY_POSITION_PIN) == LOW){
-    //   stepper.runSpeed();
-    // } else {
-    //   //Serial.println("Error: Tray out of position.");
-    //   Serial.println("0");
-    //   stepper.stop();
-    //   return;
-    // }
+    if (true){//digitalRead(TRAY_POSITION_PIN) == HIGH){
+      stepper.runSpeed();
+    } else {
+      //Serial.println("Error: Tray out of position.");
+      Serial.println("0");
+      stepper.stop();
+      return;
+    }
   }
   stepper.stop();
 

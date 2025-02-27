@@ -72,5 +72,5 @@ def collectData(ser):
         return 0
 
 # Run the script when executed
-if __name__ == '__main__':
-    collectData()
+# if __name__ == '__main__':
+#     collectData()

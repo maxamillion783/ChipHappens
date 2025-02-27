@@ -18,8 +18,8 @@ from Data_Processing.Data_Visualization.plotData import plotData
 from Sensor_Interface.sensorDataCollection import collectData
 
 #works on these files:
-# file = 'Sensor_Interface/output_files/trendData_measurementData.csv'
-file = '../Test_Data/11-12/AP-DATA-010_11-12_BSC_c=78_d=20_t=1000_v=1000_ma=4.csv'
+file = 'Sensor_Interface/output_files/trendData_measurementData.csv'
+# file = '../Test_Data/11-12/AP-DATA-010_11-12_BSC_c=78_d=20_t=1000_v=1000_ma=4.csv'
 # file = '../Test_Data/11-12/AP-DATA-016_11-12_WCC_c=60_d=30_t=1000_v=1000_ma=4_messy.csv'
 # file = '../Test_Data/11-12/AP-DATA-015_11-12_BSC_c=54_d=30_t=1000_v=1000_ma=4_messy.csv'
 # file = '../Test_Data/11-12/AP-DATA-014_11-12_BSC_c=64_d=30_t=1000_v=1000_ma=4.csv'
@@ -37,7 +37,7 @@ def openSerialPort():
         # ports = serial.tools.list_ports.comports()
         # for port in ports:
         #     print(port.device)
-        ser = serial.Serial(port='COM4', baudrate=9600, timeout=1)
+        ser = serial.Serial(port='COM5', baudrate=9600, timeout=1)
         print(f"Serial port {ser.name} opened successfully")
         time.sleep(2)
         return ser
@@ -72,24 +72,24 @@ def countWithConfidence():
     # Count forward and backward
     print("FORWARD COUNT")
     count, numInvalidPeaks, numDoublePeaks = countFile(file)
-    print("\nBACKWARD COUNT")
-    backCount, backNumInvalidPeaks, backNumDoublePeaks = countFile(backFile, True) # Count from return journey scan
+    errMessage = "Temporary Error Message"
+    # print("\nBACKWARD COUNT")
+    # backCount, backNumInvalidPeaks, backNumDoublePeaks = countFile(backFile, True) # Count from return journey scan
 
-    # Immediate error if counts don't match
-    if count != backCount:
-        confidence = 0
-        errMessage = "Error. Forward and backward counts do not match. Please try again."
+    # # Immediate error if counts don't match
+    # if count != backCount:
+    #     confidence = 0
+    #     errMessage = "Error. Forward and backward counts do not match. Please try again."
     
-    # Compute a confidence based on the number of invalid and double peaks
-    # TODO: Consider whether the number of double peaks between counts matches (currently uses an average)
-    doubleRate = 5 # Lose 10 confidence points per double peak (20 double peaks results in zero confidence)
-    invalidRate = 20 # Lose 20 confidence points per invalid peak (5 invalid peaks results in zero confidence)
-    confidence = 100 - doubleRate*(numDoublePeaks + backNumDoublePeaks)/2.0 - invalidRate*(numInvalidPeaks + backNumInvalidPeaks)/2.0
-    confidence = max(0, confidence) # Can't have negative percent confidence
+    # # Compute a confidence based on the number of invalid and double peaks
+    # # TODO: Consider whether the number of double peaks between counts matches (currently uses an average)
+    # doubleRate = 5 # Lose 10 confidence points per double peak (20 double peaks results in zero confidence)
+    # invalidRate = 20 # Lose 20 confidence points per invalid peak (5 invalid peaks results in zero confidence)
+    # confidence = 100 - doubleRate*(numDoublePeaks + backNumDoublePeaks)/2.0 - invalidRate*(numInvalidPeaks + backNumInvalidPeaks)/2.0
+    # confidence = max(0, confidence) # Can't have negative percent confidence
     return count, confidence, errMessage
 
 ser = openSerialPort()
-collectData()
 
 count, confidence, errMessage = countWithConfidence()
 # Print out information
