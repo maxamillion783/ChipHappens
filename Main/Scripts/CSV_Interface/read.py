@@ -8,8 +8,9 @@ import pandas as pd
 @return sensorDataQuality array of sensor data qualities (either ALARM or GO for every data point)
 """
 def read(file, returnJourney=False):
-    df = pd.read_csv(file) # No longer skipping rows as .csv file format has changed
-    sensorData = df.iloc[:,1]
+    df = pd.read_csv(file, header=None) # No longer skipping rows as .csv file format has changed
+    print(df)
+    sensorData = df.iloc[:,0]
     
     # Iterate over sensorData array to make a sensorDataQuality Array
     sensorDataQuality = ['']*len(sensorData) # Preallocate string array for sensorDataQuality that is the same size as sensorData
