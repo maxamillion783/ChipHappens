@@ -42,6 +42,7 @@ void setup() {
   pinMode(LEFT_LIMIT_SWITCH_PIN, INPUT_PULLUP);
   pinMode(RIGHT_LIMIT_SWITCH_PIN, INPUT_PULLUP);
   pinMode(TRAY_POSITION_PIN, INPUT_PULLUP);
+  pinMode(LED_BUILTIN,OUTPUT);
 
   //Configure the stepper motor
   stepper.setMaxSpeed(MAX_SPEED);
@@ -60,13 +61,14 @@ void loop() {
 
     //If homing sequence is commanded and the tray is in position, run homing sequence
     if (command == 'H') {
-      if (digitalRead(TRAY_POSITION_PIN) == LOW){
-        //Perform homing sequence
-        homeMotor();
-      } else {
-        //Serial.println("Error: Tray out of position.");
-        Serial.println("0");
-      }
+      homeMotor();
+      // if (digitalRead(TRAY_POSITION_PIN) == LOW){
+      //   //Perform homing sequence
+      //   homeMotor();
+      // } else {
+      //   //Serial.println("Error: Tray out of position.");
+      //   Serial.println("0");
+      // }
     }
     //If scan is commanded, the tray is in position, and it's already been homed, run scanning sequence
     else if (command == 'S') {
@@ -91,30 +93,34 @@ void homeMotor() {
 
   //Move motor to the right until the right limit switch is pressed
   stepper.setSpeed(HOMING_SPEED);
-  while (digitalRead(RIGHT_LIMIT_SWITCH_PIN) == HIGH) {
-    if (digitalRead(TRAY_POSITION_PIN) == LOW){
-      stepper.runSpeed();
-    } else {
-      //Serial.println("Error: Tray out of position.");
-      Serial.println("0");
-      stepper.stop();
-      return;
-    }
+  long startTime = millis();
+  while (digitalRead((RIGHT_LIMIT_SWITCH_PIN) == HIGH) && (millis() - startTime < 10000)) {
+    stepper.runSpeed();
+    // if (digitalRead(TRAY_POSITION_PIN) == LOW){
+    //   stepper.runSpeed();
+    // } else {
+    //   //Serial.println("Error: Tray out of position.");
+    //   Serial.println("0");
+    //   stepper.stop();
+    //   return;
+    // }
   }
   stepper.stop();
   stepper.setCurrentPosition(0); //Temporarily set the current position as 0
 
   //Move motor to the left until the left limit switch is pressed
   stepper.setSpeed(-HOMING_SPEED);
-  while (digitalRead(LEFT_LIMIT_SWITCH_PIN) == HIGH) {
-    if (digitalRead(TRAY_POSITION_PIN) == LOW){
-      stepper.runSpeed();
-    } else {
-      //Serial.println("Error: Tray out of position.");
-      Serial.println("0");
-      stepper.stop();
-      return;
-    }
+  startTime = millis();
+  while ((digitalRead(LEFT_LIMIT_SWITCH_PIN) == HIGH) && (millis() - startTime < 10000)) {
+    stepper.runSpeed();
+    // if (digitalRead(TRAY_POSITION_PIN) == LOW){
+    //   stepper.runSpeed();
+    // } else {
+    //   //Serial.println("Error: Tray out of position.");
+    //   Serial.println("0");
+    //   stepper.stop();
+    //   return;
+    // }
   }
   stepper.stop();
 
@@ -124,6 +130,8 @@ void homeMotor() {
 
   //Serial.println("Homing complete. Steps between switches: " + String(stepsBetweenSwitches));
   isHomed = true;
+
+  Serial.println("1");
 }
 
 void performScan() {
@@ -131,7 +139,8 @@ void performScan() {
 
   //Move the carriage to the right end. Sensor should be gathering data by this point.
   stepper.moveTo(stepsBetweenSwitches);
-  while (stepper.distanceToGo() != 0) {
+  long startTime = millis();
+  while (stepper.distanceToGo() != 0 && (millis() - startTime < 10000)) {
     stepper.run();
     //Check if either limit switch is pressed after each step
     if (digitalRead(LEFT_LIMIT_SWITCH_PIN) == LOW || digitalRead(RIGHT_LIMIT_SWITCH_PIN) == LOW) {
@@ -151,7 +160,7 @@ void performScan() {
 
   //Move the carriage back to the left end. Sensor is still collecting data.
   stepper.moveTo(0);
-  while (stepper.distanceToGo() != 0) {
+  while ((stepper.distanceToGo() != 0) && (millis() - startTime < 10000)) {
     stepper.run();
     // Check if either limit switch is pressed after each step
     if (digitalRead(LEFT_LIMIT_SWITCH_PIN) == LOW || digitalRead(RIGHT_LIMIT_SWITCH_PIN) == LOW) {

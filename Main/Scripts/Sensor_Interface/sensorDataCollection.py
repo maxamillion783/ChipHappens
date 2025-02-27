@@ -26,10 +26,14 @@ def collectData(ser):
     print("CL3wrap.CL3IF_OpenEthernetCommunication:", CL3wrap.CL3IF_hex(res))
     if res != 0:
         print("Failed to connect to controller.")
-        sys.exit()  # Exit if connection fails
+        #sys.exit()  # Exit if connection fails
     print("----")
 ###############################################################################
-    while (~(ser.in_waiting > 0)):
+    # Send command to arduino to start running
+    ser.write(b'H')
+
+    # Wait for serial response from arduino
+    while (not (ser.in_waiting > 0)):
         measurementData = CL3wrap.CL3IF_MEASUREMENT_DATA()
         res = CL3wrap.CL3IF_GetMeasurementData(deviceId, measurementData)
         print("CL3wrap.CL3IF_GetMeasurementData:",
@@ -60,7 +64,9 @@ def collectData(ser):
     res = CL3wrap.CL3IF_CloseCommunication(deviceId)
     print("CL3wrap.CL3IF_CloseCommunication:", CL3wrap.CL3IF_hex(res))
 
-    if (ser.readline().decode().strip() == '1'):
+    received = ser.readline().decode('utf-8').strip()  # Read until newline
+    print(f"Received: {received}")
+    if (received == '1'):
         return 1
     else:
         return 0
