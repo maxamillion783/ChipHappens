@@ -14,7 +14,7 @@ def collectData(ser):
     # IP address for Colton's computer now. Will change to LattePanda later
     ethernetConfig.abyIpAddress[0] = 169  
     ethernetConfig.abyIpAddress[1] = 254  
-    ethernetConfig.abyIpAddress[2] = 63   
+    ethernetConfig.abyIpAddress[2] = 79   
     ethernetConfig.abyIpAddress[3] = 100  
     ethernetConfig.wPortNo = 24685        
     timeout = 10000 
