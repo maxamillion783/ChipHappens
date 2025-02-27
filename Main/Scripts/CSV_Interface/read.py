@@ -9,7 +9,6 @@ import pandas as pd
 """
 def read(file, returnJourney=False):
     df = pd.read_csv(file, header=None) # No longer skipping rows as .csv file format has changed
-    print(df)
     sensorData = df.iloc[:,0]
     
     # Iterate over sensorData array to make a sensorDataQuality Array
