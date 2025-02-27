@@ -6,3 +6,5 @@ To stage files for commit: !git add.
 To commit: !git commit -m "short description of changes"
 To push changes: !git push
 To pull changes: !git pull
+
+Max EDIT
