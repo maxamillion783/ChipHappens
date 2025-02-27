@@ -44,6 +44,12 @@ class KeyboardPanel(BoxLayout):
     pass
 
 class MyApp(App):
+    init = True
+    waitHome = False
+
+    jinfop = None
+    cpanel = None
+    tpanel = None
 
     running = False
     def build(self):
@@ -52,6 +58,23 @@ class MyApp(App):
         # return Builder.load_string(KV)
     
     def check(self, b):
+        if self.init:
+            for child in self.root.children:
+                if isinstance(child, JobInfoPanel):
+                    self.jinfop = child
+                elif isinstance(child, CountPanel):
+                    self.cpanel = child
+                elif isinstance(child, TotalPanel):
+                    self.tpanel = child
+            self.init = False
+
+            self.waitHome = True
+        
+        if self.waitHome:
+
+            #check if finished
+
+            self.waitHome = False
         if self.running:
             print("Hello")
 
