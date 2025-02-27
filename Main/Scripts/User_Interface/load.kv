@@ -6,6 +6,7 @@
         width: 500
         padding: 10
         spacing: 2
+        id: info_sub
         Label:
             text: "Job ID"
             color: (0,0,0,1)
@@ -13,6 +14,7 @@
             size_hint: (0.2, None)
             height: 36
         TextInput:
+            id: jid
             hint_text: ""
             color: (0,0,0,1)
             font_size: 18
@@ -25,6 +27,7 @@
             size_hint: (0.2, None)
             height: 36
         TextInput:
+            id: sjid
             hint_text: ""
             color: (0,0,0,1)
             font_size: 18
@@ -37,6 +40,7 @@
             size_hint: (0.2, None)
             height: 36
         TextInput:
+            id: bid
             hint_text: ""
             color: (0,0,0,1)
             font_size: 18
@@ -49,6 +53,7 @@
             size_hint: (0.2, None)
             height: 36
         TextInput:
+            id: oid
             hint_text: ""
             color: (0,0,0,1)
             font_size: 18
@@ -78,6 +83,16 @@
             font_size: 18
             size_hint: (0.2, None)
             height: 36
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 2
+        padding: 10    
+        Button:
+            text: "Update Info"
+            on_press: root.update_last_operator()
+        Button:
+            text: "Submit"
+    
 
 <CountPanel>:
     GridLayout:
@@ -94,6 +109,7 @@
             size_hint: (0.2, None)
             height: 36
         TextInput:
+            id: cnt
             hint_text: ""
             color: (0,0,0,1)
             font_size: 18
@@ -103,12 +119,14 @@
             
         Label:
             text: "Time Stamp"
+            id: tim
             color: (0,0,0,1)
             font_size: 18
             size_hint: (0.2, None)
             height: 36
         TextInput:
             hint_text: ""
+            id: cnf
             color: (0,0,0,1)
             font_size: 18
             size_hint: (0.2, None)

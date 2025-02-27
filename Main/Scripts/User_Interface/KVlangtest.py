@@ -1,4 +1,5 @@
 import sys
+import datetime
 
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
@@ -7,10 +8,27 @@ from kivy.lang import Builder
 from kivy.clock import Clock
 
 class JobInfoPanel(BoxLayout):
-    pass
+    job_info = {'jid': None, 'sjid': None, 'bid': None, 'oid': None}
+    def update_last_operator(self):
+        with open('last_operator_info.txt', 'w') as f: 
+            f.write(f'Job Id: {self.ids.jid.text}\n')
+            self.job_info['jid'] = self.ids.jid.text
+            f.write(f'Sub Job Id: {self.ids.sjid.text}\n')
+            self.job_info['sjid'] = self.ids.sjid.text
+            f.write(f'Batch Id: {self.ids.bid.text}\n')
+            self.job_info['bid'] = self.ids.bid.text
+            f.write(f'Operator Id: {self.ids.oid.text}\n')
+            self.job_info['oid'] = self.ids.oid.text
+    
+    def get_job_info(self):
+        return self.job_info
 
 class CountPanel(BoxLayout):
-    pass
+    # pass
+    def update_data(self, cnt, cnf):
+        self.ids.cnt.text = str(cnt)
+        self.ids.cnf.text = str(cnf)
+        self.ids.tim.text = str(datetime.now())
 
 class TotalPanel(BoxLayout):
     pass
