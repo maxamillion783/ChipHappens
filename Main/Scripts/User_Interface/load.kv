@@ -10,78 +10,86 @@
         Label:
             text: "Job ID"
             color: (0,0,0,1)
-            font_size: 18
+            font_size: 28
             size_hint: (0.2, None)
             height: 36
-        TextInput:
+        CustomTextInput:
             id: jid
             hint_text: ""
+            multiline: False
+            focus: False
             color: (0,0,0,1)
-            font_size: 18
+            font_size: 20
             size_hint: (0.2, None)
             height: 36
             
         Label:
             text: "SubJob ID"
             color: (0,0,0,1)
-            font_size: 18
+            font_size: 28
             size_hint: (0.2, None)
             height: 36
-        TextInput:
+        CustomTextInput:
             id: sjid
             hint_text: ""
+            multiline: False
+            focus: False
             color: (0,0,0,1)
-            font_size: 18
+            font_size: 20
             size_hint: (0.2, None)
             height: 36
         Label:
             text: "Batch ID"
             color: (0,0,0,1)
-            font_size: 18
+            font_size: 28
             size_hint: (0.2, None)
             height: 36
-        TextInput:
+        CustomTextInput:
             id: bid
             hint_text: ""
+            multiline: False
+            focus: False
             color: (0,0,0,1)
-            font_size: 18
+            font_size: 20
             size_hint: (0.2, None)
             height: 36
         Label:
             text: "Operator ID"
             color: (0,0,0,1)
-            font_size: 18
+            font_size: 28
             size_hint: (0.2, None)
             height: 36
-        TextInput:
+        CustomTextInput:
             id: oid
             hint_text: ""
+            multiline: False
+            focus: False
             color: (0,0,0,1)
-            font_size: 18
+            font_size: 20
             size_hint: (0.2, None)
             height: 36
         Label:
             text: "Counter Serial Number"
             color: (0,0,0,1)
-            font_size: 18
+            font_size: 28
             size_hint: (0.2, None)
             height: 36
         Label:
             text: "002"
             color: (0,0,0,1)
-            font_size: 18
+            font_size: 28
             size_hint: (0.2, None)
             height: 36
         Label:
             text: "Version"
             color: (0,0,0,1)
-            font_size: 18
+            font_size: 28
             size_hint: (0.2, None)
             height: 36
         Label:
             text: "V01"
             color: (0,0,0,1)
-            font_size: 18
+            font_size: 28
             size_hint: (0.2, None)
             height: 36
     BoxLayout:
@@ -91,9 +99,11 @@
         size_hint_x: 0.2 
         Button:
             text: "Update Info"
+            font_size: 28
             on_press: root.update_last_operator()
         Button:
             text: "Submit"
+            font_size: 28
     
 
 <CountPanel>:
@@ -107,14 +117,14 @@
         Label:
             text: "Current Count"
             color: (0,0,0,1)
-            font_size: 18
+            font_size: 28
             size_hint: (0.2, None)
             height: 36
         TextInput:
             id: cnt
             hint_text: ""
             color: (0,0,0,1)
-            font_size: 18
+            font_size: 20
             size_hint: (0.2, None)
             height: 36
             readonly: True
@@ -123,32 +133,33 @@
             text: "Time Stamp"
             id: tim
             color: (0,0,0,1)
-            font_size: 18
+            font_size: 28
             size_hint: (0.2, None)
             height: 36
         TextInput:
             hint_text: ""
             id: cnf
             color: (0,0,0,1)
-            font_size: 18
+            font_size: 20
             size_hint: (0.2, None)
             height: 36
             readonly: True
         Label:
             text: "Confidence Interval"
             color: (0,0,0,1)
-            font_size: 18
+            font_size: 28
             size_hint: (0.2, None)
             height: 36
         TextInput:
             hint_text: ""
             color: (0,0,0,1)
-            font_size: 18
+            font_size: 20
             size_hint: (0.2, None)
             height: 36
             readonly: True
         Button:
             text: "Run"
+            font_size: 28
             background_normal: ''
             background_color: (1, 0.1, 0.2, 1)
             # color: (0,1,0,1)
@@ -176,13 +187,13 @@
             Label:
                 text: "Running Total"
                 color: (0,0,0,1)
-                font_size: 18
+                font_size: 28
                 size_hint: (0.2, None)
                 height: 36
             TextInput:
                 hint_text: ""
                 color: (0,0,0,1)
-                font_size: 18
+                font_size: 20
                 size_hint: (0.2, None)
                 height: 36
                 readonly: True
@@ -211,19 +222,19 @@
             Label:
                 text: "Time"
                 color: (0,0,0,1)
-                font_size: 18
+                font_size: 28
                 size_hint: (0.2, None)
                 height: 36
             Label:
                 text: "Count"
                 color: (0,0,0,1)
-                font_size: 18
+                font_size: 28
                 size_hint: (0.2, None)
                 height: 36
             Label:
                 text: "Metrics"
                 color: (0,0,0,1)
-                font_size: 18
+                font_size: 28
                 size_hint: (0.2, None)
                 height: 36
         GridLayout:
@@ -253,149 +264,149 @@
                         text: 
                             "Scroll"
                         color: (0,0,0,1)
-                        font_size: 18
+                        font_size: 28
                         size_hint: (0.2, None)
                         height: 36
                     Label:
                         text: 
                             "Scroll"
                         color: (0,0,0,1)
-                        font_size: 18
+                        font_size: 28
                         size_hint: (0.2, None)
                         height: 36
                     Label:
                         text: 
                             "Scroll"
                         color: (0,0,0,1)
-                        font_size: 18
+                        font_size: 28
                         size_hint: (0.2, None)
                         height: 36
                     Label:
                         text: 
                             "Scroll"
                         color: (0,0,0,1)
-                        font_size: 18
+                        font_size: 28
                         size_hint: (0.2, None)
                         height: 36
                     Label:
                         text: 
                             "Scroll"
                         color: (0,0,0,1)
-                        font_size: 18
+                        font_size: 28
                         size_hint: (0.2, None)
                         height: 36
                     Label:
                         text: 
                             "Scroll"
                         color: (0,0,0,1)
-                        font_size: 18
+                        font_size: 28
                         size_hint: (0.2, None)
                         height: 36
                     Label:
                         text: 
                             "Scroll"
                         color: (0,0,0,1)
-                        font_size: 18
+                        font_size: 28
                         size_hint: (0.2, None)
                         height: 36
                     Label:
                         text: 
                             "Scroll"
                         color: (0,0,0,1)
-                        font_size: 18
+                        font_size: 28
                         size_hint: (0.2, None)
                         height: 36
                     Label:
                         text: 
                             "Scroll"
                         color: (0,0,0,1)
-                        font_size: 18
+                        font_size: 28
                         size_hint: (0.2, None)
                         height: 36
 
-<KeyboardPanel>:
+<NumberPad>:
     BoxLayout:
         orientation: 'horizontal'
         spacing: 10
         padding: 10
         Button:
             text: '0'
-            color: (0,0,0,1)
-            font_size: 25
-            size_hint: (0.2, None)
+            color: (1,1,1,1)
+            font_size: 28
+            size_hint: (0.2, 1)
             height: 100
-            on_press: root.enter_number(0) 
+            on_press: root.on_number_press(0)
         Button:
             text: '1'
-            color: (0,0,0,1)
-            font_size: 25
-            size_hint: (0.2, None)
+            color: (1,1,1,1)
+            font_size: 28
+            size_hint: (0.2, 1)
             height: 100
-            on_press: root.enter_number(1) 
+            on_press: root.on_number_press(1)
         Button:
             text: '2'
-            color: (0,0,0,1)
-            font_size: 25
-            size_hint: (0.2, None)
+            color: (1,1,1,1)
+            font_size: 28
+            size_hint: (0.2, 1)
             height: 100
-            on_press: root.enter_number(2)
+            on_press: root.on_number_press(2)
         Button:
             text: '3'
-            color: (0,0,0,1)
-            font_size: 25
-            size_hint: (0.2, None)
+            color: (1,1,1,1)
+            font_size: 28
+            size_hint: (0.2, 1)
             height: 100
-            on_press: root.enter_number(3)
+            on_press: root.on_number_press(3)
         Button:
             text: '4'
-            color: (0,0,0,1)
-            font_size: 25
-            size_hint: (0.2, None)
+            color: (1,1,1,1)
+            font_size: 28
+            size_hint: (0.2, 1)
             height: 100
-            on_press: root.enter_number(4)
+            on_press: root.on_number_press(4)
         Button:
             text: '5'
-            color: (0,0,0,1)
-            font_size: 25
-            size_hint: (0.2, None)
+            color: (1,1,1,1)
+            font_size: 28
+            size_hint: (0.2, 1)
             height: 100
-            on_press: root.enter_number(5)
+            on_press: root.on_number_press(5)
         Button:
             text: '6'
-            color: (0,0,0,1)
-            font_size: 25
-            size_hint: (0.2, None)
+            color: (1,1,1,1)
+            font_size: 28
+            size_hint: (0.2, 1)
             height: 100
-            on_press: root.enter_number(6)
+            on_press: root.on_number_press(6)
         Button:
             text: '7'
-            color: (0,0,0,1)
-            font_size: 25
-            size_hint: (0.2, None)
+            color: (1,1,1,1)
+            font_size: 28
+            size_hint: (0.2, 1)
             height: 100
-            on_press: root.enter_number(7)
+            on_press: root.on_number_press(7)
         Button:
             text: '8'
-            color: (0,0,0,1)
-            font_size: 25
-            size_hint: (0.2, None)
+            color: (1,1,1,1)
+            font_size: 28
+            size_hint: (0.2, 1)
             height: 100
-            on_press: root.enter_number(8)
+            on_press: root.on_number_press(8)
         Button:
             text: '9'
-            color: (0,0,0,1)
-            font_size: 25
-            size_hint: (0.2, None)
+            color: (1,1,1,1)
+            font_size: 28
+            size_hint: (0.2, 1)
             height: 100
-            on_press: root.enter_number(9)
+            on_press: root.on_number_press(9)
         Button:
-            text: '←'
-            color: (0,0,0,1)
-            font_size: 25
-            size_hint: (0.2, None)
+            text: 'delete'
+            color: (1,1,1,1)
+            font_size: 28
+            size_hint: (0.2, 1)
             height: 100
-            on_press: root.backspace()
-
+            on_press: 
+                if app.focused_textbox: app.focused_textbox.text = app.focused_textbox.text[:-1]
 
 
 
@@ -449,7 +460,8 @@ BoxLayout:
                 width:2
                 rectangle: (self.x, self.y, self.width, self.height)
             
-    KeyboardPanel:
+    NumberPad:
+        size_hint_y: 0.5
         canvas.before:
             Color:
                 rgb: (1,1,1,1)

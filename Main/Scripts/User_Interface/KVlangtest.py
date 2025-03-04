@@ -43,26 +43,21 @@ class TotalPanel(BoxLayout):
         self.ids.p_scroll.add_widget(Label(text=str(cnf),font_size=18,size_hint=(0.2,None),height=36 ))
         self.ids.p_scroll.add_widget(Label(text=time,font_size=18,size_hint=(0.2,None),height=36 ))
 
+class NumberPad(BoxLayout):
+    def on_number_press(self, number):
+        """Insert number into the currently focused text box."""
+        app = App.get_running_app()
+        # Ensure that there is a focused text box or nothing happens
+        if app.focused_textbox:  # Check if a text box is selected
+            app.focused_textbox.text += str(number)  # Append the pressed number
+
 class CustomTextInput(TextInput):
-    """A custom TextInput that updates the active text input in the App when focused."""
     def on_focus(self, instance, value):
-        if value:  # When focused
-            App.get_running_app().active_text_input = self  # Store reference in the App
+        """Update the globally stored focused text box."""
+        app = App.get_running_app()
+        if value:  # If focused
+            app.focused_textbox = self
 
-class KeyboardPanel(BoxLayout):
-    def enter_number(self, number):
-        """Insert the number into the currently selected text input."""
-        active_text_input = App.get_running_app().active_text_input  # Get active input
-        if active_text_input:
-            active_text_input.text += str(number)
-            active_text_input.focus = True  # Restore focus
-
-    def backspace(self):
-        """Remove the last character from the currently selected text input."""
-        active_text_input = App.get_running_app().active_text_input  # Get active input
-        if active_text_input and active_text_input.text:
-            active_text_input.text = active_text_input.text[:-1]
-            active_text_input.focus = True  # Restore focus
 
 class MyApp(App):
     init = True
@@ -75,6 +70,7 @@ class MyApp(App):
 
     running = False
     def build(self):
+        self.focused_textbox = None
         Clock.schedule_interval(self.check, 1)
         return Builder.load_file('load.kv')
         # return Builder.load_string(KV)
