@@ -26,12 +26,13 @@ the lattePanda's onboard microcontroller.
 //const byte DIR_PIN = 10;    //LOW -> clockwise?, HIGH -> counterclockwise?
 
 // Define motor parameters
-const float MAX_SPEED = 1500.0;   //[steps per second]
-const float ACCELERATION = 1500.0; //[steps per second]
-const float HOMING_SPEED = 500.0; //Slower speed for homing sequence [steps per second]
+const int MICROSTEPS = 1;
+const float MAX_SPEED = 2000.0 * MICROSTEPS;   //[steps per second]
+const float ACCELERATION = 4000.0 * MICROSTEPS; //[steps per second]
+const float HOMING_SPEED = 200.0 * MICROSTEPS; //Slower speed for homing sequence [steps per second]
 
 //Create a stepper motor object using 2-wire constructor
-AccelStepper stepper(AccelStepper::FULL2WIRE, STEP_PIN, DIR_PIN);
+AccelStepper stepper(AccelStepper::DRIVER, STEP_PIN, DIR_PIN);
 
 // Variables
 long stepsBetweenSwitches = 0; //Number of steps between limit switches
@@ -80,7 +81,7 @@ void loop() {
           Serial.println("0");
         }
       } else {
-        //Serial.println("Error: Motor not homed. Perform homing first.");
+        Serial.println("Error: Motor not homed. Perform homing first.");
         Serial.println("0");
       }
     }
@@ -91,9 +92,9 @@ void homeMotor() {
   //Serial.println("Starting homing sequence...");
 
   //Move motor to the right until the right limit switch is pressed
-  stepper.setSpeed(HOMING_SPEED);
-  long startTime = millis();
-  while (digitalRead((RIGHT_LIMIT_SWITCH_PIN) == HIGH) && (millis() - startTime < 10000)) {
+  stepper.setSpeed(-HOMING_SPEED);
+  unsigned long startTime = millis();
+  while ((digitalRead(RIGHT_LIMIT_SWITCH_PIN) == HIGH) && (millis() - startTime < 20000)) { //about 7800 milliseconds for a full scan
     if (true){//digitalRead(TRAY_POSITION_PIN) == HIGH){
       stepper.runSpeed();
     } else {
@@ -107,9 +108,9 @@ void homeMotor() {
   stepper.setCurrentPosition(0); //Temporarily set the current position as 0
 
   //Move motor to the left until the left limit switch is pressed
-  stepper.setSpeed(-HOMING_SPEED);
+  stepper.setSpeed(HOMING_SPEED);
   startTime = millis();
-  while ((digitalRead(LEFT_LIMIT_SWITCH_PIN) == HIGH) && (millis() - startTime < 10000)) {
+  while ((digitalRead(LEFT_LIMIT_SWITCH_PIN) == HIGH) && (millis() - startTime < 20000)) {
     if (true){//digitalRead(TRAY_POSITION_PIN) == HIGH){
       stepper.runSpeed();
     } else {
@@ -137,17 +138,17 @@ void performScan() {
   //Move the carriage to the right end. Sensor should be gathering data by this point.
   stepper.moveTo(stepsBetweenSwitches);
   long startTime = millis();
-  while (stepper.distanceToGo() != 0 && (millis() - startTime < 10000)) {
+  while ((stepper.distanceToGo() != 0) && (millis() - startTime < 7000)) {
     stepper.run();
     //Check if either limit switch is pressed after each step
     if (digitalRead(LEFT_LIMIT_SWITCH_PIN) == LOW || digitalRead(RIGHT_LIMIT_SWITCH_PIN) == LOW) {
-      //Serial.println("Scan unsuccessful: Limit switch triggered.");
+      Serial.println("Scan unsuccessful: Limit switch triggered.");
       Serial.println("0");
       stepper.stop();
       isHomed = false;
       return;
-    } else if (digitalRead(TRAY_POSITION_PIN) == HIGH){
-      //Serial.println("Error: Tray out of position.");
+    } else if (digitalRead(TRAY_POSITION_PIN) == LOW){
+      Serial.println("Error: Tray out of position.");
       Serial.println("0");
       stepper.stop();
       isHomed = false;
@@ -157,7 +158,8 @@ void performScan() {
 
   //Move the carriage back to the left end. Sensor is still collecting data.
   stepper.moveTo(0);
-  while ((stepper.distanceToGo() != 0) && (millis() - startTime < 10000)) {
+  startTime = millis();
+  while ((stepper.distanceToGo() != 0) && (millis() - startTime < 7000)) {
     stepper.run();
     // Check if either limit switch is pressed after each step
     if (digitalRead(LEFT_LIMIT_SWITCH_PIN) == LOW || digitalRead(RIGHT_LIMIT_SWITCH_PIN) == LOW) {
