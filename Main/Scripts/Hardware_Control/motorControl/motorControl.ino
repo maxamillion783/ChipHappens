@@ -27,9 +27,9 @@ the lattePanda's onboard microcontroller.
 
 // Define motor parameters
 const int MICROSTEPS = 1;
-const float MAX_SPEED = 2000.0 * MICROSTEPS;   //[steps per second]
+const float MAX_SPEED = 1500.0 * MICROSTEPS;   //[steps per second]
 const float ACCELERATION = 4000.0 * MICROSTEPS; //[steps per second]
-const float HOMING_SPEED = 200.0 * MICROSTEPS; //Slower speed for homing sequence [steps per second]
+const float HOMING_SPEED = 500.0 * MICROSTEPS; //Slower speed for homing sequence [steps per second]
 
 //Create a stepper motor object using 2-wire constructor
 AccelStepper stepper(AccelStepper::DRIVER, STEP_PIN, DIR_PIN);
@@ -125,7 +125,11 @@ void homeMotor() {
   // Calculate the number of steps between the switches
   stepsBetweenSwitches = -stepper.currentPosition();
   stepper.setCurrentPosition(0); //Set the current position as 0
-
+  
+  stepper.moveTo(-20);
+  while (stepper.distanceToGo() != 0) {
+    stepper.run();
+  }
   //Serial.println("Homing complete. Steps between switches: " + String(stepsBetweenSwitches));
   isHomed = true;
 
@@ -136,7 +140,7 @@ void performScan() {
   Serial.println("Starting scan sequence...");
 
   //Move the carriage to the right end. Sensor should be gathering data by this point.
-  stepper.moveTo(stepsBetweenSwitches);
+  stepper.moveTo(stepsBetweenSwitches + 20);
   long startTime = millis();
   while ((stepper.distanceToGo() != 0) && (millis() - startTime < 7000)) {
     stepper.run();
@@ -157,7 +161,7 @@ void performScan() {
   }
 
   //Move the carriage back to the left end. Sensor is still collecting data.
-  stepper.moveTo(0);
+  stepper.moveTo(-20);
   startTime = millis();
   while ((stepper.distanceToGo() != 0) && (millis() - startTime < 7000)) {
     stepper.run();
